@@ -11,9 +11,22 @@ fs.readFile(path.join(dirname, '../data/users.json'))
 const UserModel = (() => {
 
   const getAll = async () => users
+
+  const get = async (id: number) => {
+    const user = users.find(u => u.id === id)
+    return user
+  }
+
+  const remove = async (id: number) => {
+    const idx = users.findIndex(u => u.id === id)
+    users.splice(idx, 1)
+    return
+  }
   
   return {
-    getAll
+    getAll,
+    get,
+    remove
   }
 })()
 
