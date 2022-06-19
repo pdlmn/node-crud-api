@@ -9,7 +9,8 @@ const sendUsers = async (res: ServerResponse) => {
     res.writeHead(200, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify(users, null, 2) + '\n')
   } catch(err) {
-    console.log(err)
+    res.writeHead(500)
+    res.end(JSON.stringify({ message: 'Internal server error' }, null, 2) + '\n')
   }
 }
 
@@ -25,7 +26,8 @@ const sendUser = async (res: ServerResponse, id: number) => {
       res.end(JSON.stringify(user, null, 2) + '\n')
     }
   } catch(err) {
-    console.log(err)
+    res.writeHead(500)
+    res.end(JSON.stringify({ message: 'Internal server error' }, null, 2) + '\n')
   }
 }
 
@@ -42,7 +44,8 @@ const removeUser = async (res: ServerResponse, id: number) => {
       res.end(JSON.stringify({ message: `User ${id} was deleted` }, null, 2) + '\n')
     }
   } catch(err) {
-    console.log(err)
+    res.writeHead(500)
+    res.end(JSON.stringify({ message: 'Internal server error' }, null, 2) + '\n')
   }
 }
 
@@ -64,7 +67,8 @@ const createUser = async (req: IncomingMessage, res: ServerResponse) => {
     res.writeHead(201, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify(newUser, null, 2) + '\n')
   } catch(err) {
-    console.log(err)
+    res.writeHead(500)
+    res.end(JSON.stringify({ message: 'Internal server error' }, null, 2) + '\n')
   }
 }
 
@@ -89,7 +93,8 @@ const updateUser = async (req: IncomingMessage, res: ServerResponse, id: number)
       res.end(JSON.stringify(updUser, null, 2) + '\n')
     }
   } catch(err) {
-    console.log(err)
+    res.writeHead(500)
+    res.end(JSON.stringify({ message: 'Internal server error' }, null, 2) + '\n')
   }
 }
 
