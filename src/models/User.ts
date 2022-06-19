@@ -2,7 +2,9 @@ import fs from 'fs/promises'
 import path from 'path'
 import { dirname } from '../utils/filename';
 import { User } from '../types'
+import { saveData } from '../utils/saveData';
 
+const usersJsonPath = path.join(process.argv[1], '../../data/users.json')
 let users: User[];
 fs.readFile(path.join(dirname, '../data/users.json'))
   .then(buff => buff.toString())
@@ -20,6 +22,7 @@ const UserModel = (() => {
   const remove = async (id: number) => {
     const idx = users.findIndex(u => u.id === id)
     users.splice(idx, 1)
+    await saveData(usersJsonPath, users)
     return
   }
   
