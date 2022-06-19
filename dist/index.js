@@ -11,6 +11,9 @@ var server = http_1.default.createServer(function (req, res) {
     if (req.url === '/users' && req.method === 'GET') {
         (0, users_1.sendUsers)(res);
     }
+    else if (req.url === '/users' && req.method === 'POST') {
+        (0, users_1.createUser)(req, res);
+    }
     else if (((_a = req.url) === null || _a === void 0 ? void 0 : _a.match(/\/users\/([0-9]+)/)) && req.method === 'GET') {
         var id = +((_b = req.url) === null || _b === void 0 ? void 0 : _b.split('/')[2]);
         (0, users_1.sendUser)(res, id);

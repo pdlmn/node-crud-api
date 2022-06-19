@@ -1,5 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import { UserModel } from '../models/User'
+import { getPostData } from '../utils/getPostData'
+import { User } from '../types'
 
 const sendUsers = async (res: ServerResponse) => {
   try {
@@ -44,4 +46,26 @@ const removeUser = async (res: ServerResponse, id: number) => {
   }
 }
 
-export { sendUsers, sendUser, removeUser }
+const createUser = async (req: IncomingMessage, res: ServerResponse) => {
+  try {
+    const user = await getPostData(req)
+    if (!user) {
+      res.writeHead(400)
+      res.end(JSON.stringify({ message: 'Empty request body' }, null, 2))
+      return
+    }
+    const { id, username, age, hobbies }: any = await UserModel.create(JSON.parse(user))
+    const newUser: User = {
+      id,
+      username,
+      age,
+      hobbies
+    }
+    res.writeHead(201, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify(newUser, null, 2) + '\n')
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+export { sendUsers, sendUser, removeUser, createUser }
