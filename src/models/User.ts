@@ -36,11 +36,21 @@ const UserModel = (() => {
     await saveData(usersJsonPath, users)
     return newUser
   }
+
+  const update = async (id: number, user: User) => {
+    const idx = users.findIndex(user => user.id === id)
+    const updUser: User = { id, ...user }
+    users[idx] = updUser
+
+    await saveData(usersJsonPath, users)
+    return updUser
+  }
   
   return {
     getAll,
     create,
     get,
+    update,
     remove,
   }
 })()

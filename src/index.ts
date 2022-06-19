@@ -1,5 +1,5 @@
 import http from 'http'
-import { sendUsers, createUser, sendUser, removeUser } from './controllers/users'
+import { sendUsers, createUser, sendUser, updateUser, removeUser } from './controllers/users'
 
 const port = process.env.PORT || 3000
 
@@ -11,6 +11,9 @@ const server = http.createServer((req, res) => {
   } else if (req.url?.match(/\/users\/([0-9]+)/) && req.method === 'GET') {
     const id = +req.url?.split('/')[2]
     sendUser(res, id)
+  } else if (req.url?.match(/\/users\/([0-9]+)/) && req.method === 'PUT') {
+    const id = +req.url?.split('/')[2]
+    updateUser(req, res, id)
   } else if (req.url?.match(/\/users\/([0-9]+)/) && req.method === 'DELETE') {
     const id = +req.url?.split('/')[2]
     removeUser(res, id)

@@ -68,4 +68,29 @@ const createUser = async (req: IncomingMessage, res: ServerResponse) => {
   }
 }
 
-export { sendUsers, sendUser, removeUser, createUser }
+const updateUser = async (req: IncomingMessage, res: ServerResponse, id: number) => {
+  try {
+    const user = await UserModel.get(id)
+
+    if (!user) {
+      res.writeHead(404, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ message: 'User not found' }))
+    } else {
+      const body = await getPostData(req)
+      const { username, age, hobbies }: User = JSON.parse(body)
+      const userData = {
+        username: username || user.username,
+        age: age || user.age,
+        hobbies: hobbies || user.hobbies
+      }
+
+      const updUser = await UserModel.update(id, userData)
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(updUser, null, 2) + '\n')
+    }
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+export { sendUsers, sendUser, updateUser, removeUser, createUser }
