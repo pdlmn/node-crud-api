@@ -7,7 +7,7 @@ var http_1 = __importDefault(require("http"));
 var users_1 = require("./controllers/users");
 var port = process.env.PORT || 3000;
 var server = http_1.default.createServer(function (req, res) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g;
     if (req.url === '/users' && req.method === 'GET') {
         (0, users_1.sendUsers)(res);
     }
@@ -26,9 +26,14 @@ var server = http_1.default.createServer(function (req, res) {
         var id = +((_f = req.url) === null || _f === void 0 ? void 0 : _f.split('/')[2]);
         (0, users_1.removeUser)(res, id);
     }
+    else if (req.url.startsWith('/users/')) {
+        var id = (_g = req.url) === null || _g === void 0 ? void 0 : _g.split('/')[2];
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: "".concat(id, " is not a valid id") }, null, 2) + '\n');
+    }
     else {
         res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'Route not found' }));
+        res.end(JSON.stringify({ message: 'Route not found' }, null, 2) + '\n');
     }
 });
 server.listen(port, function () { return console.log("Server runs on ".concat(port, " port.")); });

@@ -17,9 +17,13 @@ const server = http.createServer((req, res) => {
   } else if (req.url?.match(/\/users\/([0-9]+)/) && req.method === 'DELETE') {
     const id = +req.url?.split('/')[2]
     removeUser(res, id)
+  } else if (req.url.startsWith('/users/')) {
+    const id = req.url?.split('/')[2]
+    res.writeHead(400, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify({ message: `${id} is not a valid id` }, null, 2) + '\n')
   } else {
     res.writeHead(404, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify({ message: 'Route not found' }))
+    res.end(JSON.stringify({ message: 'Route not found' }, null, 2) + '\n')
   }
 })
 
