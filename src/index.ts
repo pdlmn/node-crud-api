@@ -1,0 +1,30 @@
+import http from 'http'
+import { sendUsers, createUser, sendUser, updateUser, removeUser } from './controllers/users'
+
+const port = process.env.PORT || 3000
+
+const server = http.createServer((req, res) => {
+  if (req.url === '/users' && req.method === 'GET') {
+    sendUsers(res)
+  } else if (req.url === '/users' && req.method === 'POST') {
+    createUser(req, res)
+  } else if (req.url?.match(/\/users\/([0-9]+)/) && req.method === 'GET') {
+    const id = +req.url?.split('/')[2]
+    sendUser(res, id)
+  } else if (req.url?.match(/\/users\/([0-9]+)/) && req.method === 'PUT') {
+    const id = +req.url?.split('/')[2]
+    updateUser(req, res, id)
+  } else if (req.url?.match(/\/users\/([0-9]+)/) && req.method === 'DELETE') {
+    const id = +req.url?.split('/')[2]
+    removeUser(res, id)
+  } else if (req.url.startsWith('/users/')) {
+    const id = req.url?.split('/')[2]
+    res.writeHead(400, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify({ message: `${id} is not a valid id` }, null, 2) + '\n')
+  } else {
+    res.writeHead(404, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify({ message: 'Route not found' }, null, 2) + '\n')
+  }
+})
+
+server.listen(port, () => console.log(`Server runs on ${port} port.`))
