@@ -12,6 +12,6 @@ Run `npm i` for installing dependencies, then `npm run start:prod` for building 
 
 `/users/{id}` with `GET` get specific user.
 
-`/users/{id}` with `PUD` update specific user.
+`/users/{id}` with `PUT` update specific user.
 
 `/users/{id}` with `DELETE` delete specific user.
